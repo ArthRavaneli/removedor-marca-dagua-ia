@@ -18,7 +18,7 @@ Não é necessário saber programar. O instalador faz tudo.
 
 ### Passo a Passo
 1. Baixe este projeto (Botão verde **Code > Download ZIP**) e extraia a pasta.
-2. Dê um duplo clique no arquivo **`instalador.bat`**.
+2. Dê um duplo clique no arquivo **`iniciar.bat`**.
 3. Aguarde a instalação automática (na primeira vez vai demorar pois baixará as bibliotecas de IA).
 4. O programa abrirá.
    * *Nota: Se pedir o FFmpeg, o próprio programa mostrará um botão para baixar.*

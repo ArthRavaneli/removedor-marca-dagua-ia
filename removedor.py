@@ -14,7 +14,9 @@ import subprocess
 import importlib
 from types import ModuleType
 from collections import deque
-import webbrowser 
+import webbrowser
+import io
+import tempfile # Usado para criar o ícone temporário
 
 # --- CONFIGURAÇÕES GERAIS ---
 cv2.setNumThreads(1)
@@ -413,6 +415,35 @@ def worker_process_video(args):
         queue.put(('erro', f"CRASH: {str(e_critico)}"))
         queue.put(('terminal', f"[CRASH] {str(e_critico)}"))
 
+# --- HELPERS DE IMAGEM (NOVOS/ALTERADOS) ---
+def criar_imagem_vazia(tamanho=(80, 80)):
+    """Cria uma imagem transparente vazia para balanceamento de layout."""
+    try:
+        blank_image = Image.new('RGBA', tamanho, (0, 0, 0, 0)) # Transparente
+        bio = io.BytesIO()
+        blank_image.save(bio, format="PNG")
+        return bio.getvalue()
+    except Exception as e:
+        print(f"Erro ao criar imagem vazia: {e}")
+        return None
+
+def carregar_imagem_redimensionada(caminho_img, tamanho=(80, 80)):
+    """Carrega imagem (PNG/ICO), redimensiona e converte para bytes pro FreeSimpleGUI"""
+    try:
+        if not os.path.exists(caminho_img):
+            return None
+        
+        pil_image = Image.open(caminho_img)
+        pil_image = pil_image.resize(tamanho, Image.Resampling.LANCZOS)
+        
+        # Converte para bytes (PNG na memória)
+        bio = io.BytesIO()
+        pil_image.save(bio, format="PNG")
+        return bio.getvalue()
+    except Exception as e:
+        print(f"Erro ao carregar logo: {e}")
+        return None
+
 def main_gui():
     sg.theme('GrayGrayGray')
     sg.set_options(background_color='#1c1c1c', text_element_background_color='#1c1c1c', element_background_color='#1c1c1c', input_elements_background_color='#333333', input_text_color='white', text_color='white')
@@ -432,8 +463,27 @@ def main_gui():
         ]
     ]
 
+    # --- CARREGA O LOGO E O ESPAÇADOR PARA CENTRALIZAÇÃO ---
+    tamanho_icone = (80, 80) # Tamanho fixo para garantir balanço
+    logo_data = carregar_imagem_redimensionada("icone.ico", tamanho=tamanho_icone)
+    blank_data = criar_imagem_vazia(tamanho=tamanho_icone) # Espaçador esquerdo
+    # -------------------------------------------------------
+
     layout = [
-        [sg.Push(), sg.Text('Removedor Automático', font=('Segoe UI', 20, 'bold'), pad=((0,0),(20,20))), sg.Push()],
+        # --- LINHA DO TÍTULO PERFEITAMENTE CENTRALIZADO ---
+        [
+            # 1. Espaçador invisível na esquerda (mesmo tamanho do logo)
+            sg.Image(data=blank_data, background_color='#1c1c1c', pad=(0,0)) if blank_data else sg.Text("", size=(11,1)),
+            
+            # 2. Título centralizado com Pushes
+            sg.Push(),
+            sg.Text('Removedor Automático', font=('Segoe UI', 20, 'bold'), pad=((0,0),(20,20))),
+            sg.Push(),
+            
+            # 3. Logo na direita
+            sg.Image(data=logo_data, key='-LOGO-', background_color='#1c1c1c', pad=(0,0)) if logo_data else sg.Text("", size=(11,1))
+        ],
+        # --------------------------------------------------
         
         [sg.Push(), sg.Frame('Configurações', layout_inputs, font=('Segoe UI', 10, 'bold'), pad=((0,0),(0,20)), element_justification='c', title_color='white'), sg.Push()],
         
@@ -458,6 +508,8 @@ def main_gui():
     ]
 
     window = sg.Window('Removedor Automático', layout, finalize=True, element_justification='c')
+    
+    # ... (resto do código da main_gui permanece igual) ...
     manager = multiprocessing.Manager(); queue = manager.Queue(); stop = manager.Event()
     executor = None; processing = False; total_frames = 0; processed = 0
     

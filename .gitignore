@@ -1,5 +1,7 @@
-venv/ 
-videos_originais/
-videos_prontos/
+venv/
+models/
+**/videos_originais/
+**/videos_prontos/
 *.mp4
 *.png
+*.exe

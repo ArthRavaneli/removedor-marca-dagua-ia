@@ -289,7 +289,7 @@ def worker_process_video(args):
             get_ffmpeg_path(), "-y", "-hide_banner", "-loglevel", "error",
             "-i", temp_out, "-i", caminho_entrada,
             "-c:v", "libx264", "-crf", "23", "-preset", "ultrafast",
-            "-c:a", "aac", "-map", "0:v:0", "-map", "1:a:0",
+            "-c:a", "aac", "-map", "0:v:0", "-map", "1:a:0?",
             "-shortest", caminho_final
         ]
         

@@ -38,7 +38,7 @@ Este projeto resolve a dificuldade de remover elementos estáticos de vídeos se
 > 🚧 **Limitações Conhecidas (Versão v68.2):**
 >
 > O algoritmo de detecção inteligente possui as seguintes características:
-> 1. **Opacidade:** O sistema é otimizado para remover marcas d'água **sólidas e nítidas**. Marcas muito transparentes ou "fantasmas" podem não ser detectadas corretamente.
+> 1. **Área de Cobertura:** Por segurança, o sistema ignora automaticamente elementos que ocupem **mais de 40% da tela**. Isso evita que o algoritmo confunda o cenário principal ou rostos em close-up com marcas d'água.
 > 2. **Posicionamento:** O modo automático varre toda a **periferia do vídeo** (bordas superior, inferior e laterais). Marcas d'água localizadas exatamente no **centro absoluto da tela** serão ignoradas para evitar falsos positivos no conteúdo principal.
 
 ### O Fluxo de Trabalho (Pipeline)

@@ -20,16 +20,17 @@ Um software de pós-produção avançado que utiliza visão computacional (**Flo
       <td align="center" width="50%">
         <img src="galeria_prints/demo_antes.gif" width="98%" alt="Demonstração da Interface">
         <br>
-        <em>Interface em funcionamento</em>
+        <em>Marcas com posição variável</em>
       </td>
       <td align="center" width="50%">
         <img src="galeria_prints/demo_depois.gif" width="98%" alt="Comparativo Antes e Depois Animado">
         <br>
-        <em>Resultado Antes vs. Depois</em>
+        <em>Resultado do preenchimento</em>
       </td>
     </tr>
   </table>
 </div>
+
 ## 💡 Sobre o Projeto
 
 Este projeto resolve a dificuldade de remover elementos estáticos de vídeos sem deixar "borrões" grosseiros. Diferente de softwares tradicionais que apenas desfocam a área, este sistema "entende" o que está atrás da marca d'água e redesenha o conteúdo.

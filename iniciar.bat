@@ -1,9 +1,9 @@
 @echo off
-title Instalador Removedor de Marcas dagua
+title Instalador Removedor de Marcas dagua v69
 color 0A
 
 echo ==============================================================================
-echo      REMOVEDOR DE MARCAS D'AGUA - IA (SETUP AUTOMATICO)
+echo       REMOVEDOR DE MARCAS D'AGUA - IA (SETUP AUTOMATICO)
 echo ==============================================================================
 echo.
 
@@ -35,17 +35,17 @@ if not exist "venv\instalado.lock" (
     echo Isso pode levar alguns minutos (Download de ~3GB de IA).
     echo.
     
-    echo [1/4] Atualizando gerenciador de pacotes...
+    echo [1/3] Atualizando gerenciador de pacotes...
     %PYTHON_CMD% -m pip install --upgrade pip
 
     echo.
-    echo [2/4] Instalando PyTorch com suporte a NVIDIA CUDA (GPU)...
-    REM Instala a versao especifica que voce usava (2.5.1+cu121)
-    %PIP_CMD% install torch==2.5.1+cu121 torchvision==0.20.1+cu121 torchaudio==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+    echo [2/3] Instalando bibliotecas gerais (Requirements)...
+    %PIP_CMD% install -r requirements.txt
 
     echo.
-    echo [3/4] Instalando bibliotecas do projeto...
-    %PIP_CMD% install -r requirements.txt
+    echo [3/3] Configurando Motor de IA (PyTorch GPU / CUDA)...
+    echo Isso garante que a placa de video seja usada.
+    %PIP_CMD% install torch==2.5.1+cu121 torchvision==0.20.1+cu121 torchaudio==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121 --force-reinstall --no-deps
 
     echo.
     echo [4/4] Finalizando configuracao...
